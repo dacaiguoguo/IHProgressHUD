@@ -156,12 +156,7 @@ extension IndefiniteAnimatedView {
     }
     
     func setActivityIndicator(color: UIColor) {
-        if #available(iOS 13.0, *) {
-            activityIndicator = UIActivityIndicatorView(style: .large)
-        } else {
-            activityIndicator = UIActivityIndicatorView(style: .white)
-        }
-        
+        activityIndicator = UIActivityIndicatorView(style: .white)
         activityIndicator?.hidesWhenStopped = true
         activityIndicator?.startAnimating()
         activityIndicator?.color = color
