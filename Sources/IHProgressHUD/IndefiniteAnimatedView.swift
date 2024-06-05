@@ -159,7 +159,7 @@ extension IndefiniteAnimatedView {
         if #available(iOS 13.0, *) {
             activityIndicator = UIActivityIndicatorView(style: .large)
         } else {
-            activityIndicator = UIActivityIndicatorView(style: .whiteLarge)
+            activityIndicator = UIActivityIndicatorView(style: .white)
         }
         
         activityIndicator?.hidesWhenStopped = true
