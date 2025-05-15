@@ -178,7 +178,7 @@ public class IHProgressHUD : UIView {
                 }
             }
             else {
-                localInstance = IHProgressHUD(frame: UIScreen.main.bounds)
+                localInstance = IHProgressHUD(frame: UIScreen.ihSafeMainBounds())
             }
         } else {
             DispatchQueue.main.sync {
@@ -199,7 +199,7 @@ public class IHProgressHUD : UIView {
                         localInstance = IHProgressHUD()
                     }
                 } else {
-                    localInstance = IHProgressHUD(frame: UIScreen.main.bounds)
+                    localInstance = IHProgressHUD(frame: UIScreen.ihSafeMainBounds())
                 }
             }
         }
@@ -432,7 +432,7 @@ public class IHProgressHUD : UIView {
             if viewForExtension != nil {
                 frame = viewForExtension!.frame
             } else {
-                frame = UIScreen.main.bounds
+                frame = UIScreen.ihSafeMainBounds()
             }
         }
         
@@ -453,7 +453,7 @@ public class IHProgressHUD : UIView {
                     }
                 }
                 
-                frame = rootVC?.view.window?.bounds ?? UIScreen.main.bounds
+                frame = rootVC?.view.window?.bounds ?? UIScreen.ihSafeMainBounds()
                 
                 if let or = rootVC?.view.window?.windowScene?.interfaceOrientation {
                     orientation = or
@@ -1503,7 +1503,7 @@ extension IHProgressHUD {
                 controlView?.frame = windowBounds
             }
         } else {
-            controlView?.frame = UIScreen.main.bounds
+            controlView?.frame = UIScreen.ihSafeMainBounds()
         }
         
         return controlView!
@@ -1529,6 +1529,26 @@ extension IHProgressHUD {
             }
 
             return (UIImage(named: imageName, in: imageBundle, compatibleWith: nil))
+        #endif
+    }
+}
+
+
+
+
+
+// MARK: - UIScreen Extension for Mac Catalyst Support
+extension UIScreen {
+    /// Returns a CGRect representing the screen bounds, with special handling for Mac Catalyst
+    /// - Returns: CGRect with appropriate dimensions based on platform
+    static func ihSafeMainBounds() -> CGRect {
+        #if targetEnvironment(macCatalyst)
+        // Default fixed dimensions for Mac Catalyst (iPhone 14 Pro size)
+        let catalystDefaultWidth: CGFloat = 390
+        let catalystDefaultHeight: CGFloat = 844
+        return CGRect(x: 0, y: 0, width: catalystDefaultWidth, height: catalystDefaultHeight)
+        #else
+        return UIScreen.main.bounds
         #endif
     }
 }
